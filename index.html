@@ -24,19 +24,93 @@
         color: hsl(228, 45%, 44%);
       }
     </style>
+    <script type="module" src="./script.js"></script>
   </head>
   <body>
-    <div class="text-red-500 font-Kumbh">
-      Collections Men Women About Contact Sneaker Company Fall Limited Edition
-      Sneakers These low-profile sneakers are your perfect casual wear
-      companion. Featuring a durable rubber outer sole, they’ll withstand
-      everything the weather can offer. $125.00 50% $250.00 0 Add to cart
-    </div>
+    <div class="relative max-w-360 max-auto min-h-screen">
+      <div class="px-4 sm:px-10 lg:px-15 xl:px-30">
+        <!-- HEADER -->
+        <header
+          class="flex justify-between items-center pt-4 pb-4 md:pt-0 md:pb-0 md:border-b md:border-grayish-blue"
+        >
+          <div class="flex items-end md:items-center gap-4 md:gap-10">
+            <div id="hamburger-menu-button" class="md:hidden">
+              <img
+                src="./assets/images/icon-menu.svg"
+                alt="hamburger menu button"
+              />
+            </div>
+            <div>
+              <a href="#home">
+                <img src="./assets/images/logo.svg" alt="logo image" />
+              </a>
+            </div>
+            <ul id="desktop-nav-links" class="hidden md:flex gap-4"></ul>
+          </div>
 
-    <footer class="attribution">
-      Challenge by
-      <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>.
-      Coded by <a href="https://github.com/Hary300">YHary300</a>.
-    </footer>
+          <div class="flex gap-4 items-center">
+            <div class="cursor-pointer">
+              <img
+                id="cart-icon"
+                src="./assets/images/icon-cart.svg"
+                alt="cart icon"
+              />
+            </div>
+            <div
+              class="size-7 md:size-8 overflow-hidden rounded-full shrink-0 border-2 border-orange/0 hover:border-orange cursor-pointer transition-all duration-300 ease-in-out"
+            >
+              <img
+                id="avatar-icon"
+                src="./assets/images/avatar.jpg"
+                alt="avatar"
+              />
+            </div>
+          </div>
+        </header>
+        <!-- Fall Limited Edition Sneakers These low-profile sneakers are your
+        perfect casual wear companion. Featuring a durable rubber outer sole,
+        they’ll withstand everything the weather can offer. $125.00 50% $250.00
+        0 Add to cart -->
+
+        <!-- FOOTER -->
+        <footer class="attribution mt-10">
+          Challenge by
+          <a href="https://www.frontendmentor.io?ref=challenge"
+            >Frontend Mentor</a
+          >. Coded by <a href="https://github.com/Hary300">Hary300</a>.
+        </footer>
+      </div>
+
+      <!-- MOBILE MENU -->
+      <div
+        id="overlay"
+        class="fixed bg-black/50 inset-0 transition-opacity duration-300 ease-in-out pointer-events-none opacity-0"
+      ></div>
+      <div
+        id="mobile-nav"
+        class="absolute left-0 inset-y-0 flex flex-col gap-8 bg-white w-1/2 transition-transform duration-300 ease-in-out -translate-x-200 px-4 py-6"
+      >
+        <div>
+          <img
+            id="close-button"
+            src="./assets/images/icon-close.svg"
+            alt="cross button"
+          />
+        </div>
+        <ul id="mobile-nav-links" class="flex flex-col gap-3"></ul>
+      </div>
+
+      <!-- CART BOX-->
+      <div
+        id="cart-box"
+        class="absolute md:right-[5%] md:translate-0 top-20 py-4 rounded-xl flex flex-col w-[calc(100%-2rem)] right-1/2 translate-x-1/2 md:max-w-100 shadow-[0_0_10px_rgba(0,0,0,0.2)] bg-white transition-all duration-300 ease-in-out opacity-0 pointer-events-none"
+      >
+        <p class="px-4 pb-4 border-b border-grayish-blue font-bold">Cart</p>
+        <div
+          id="cart-content-container"
+          class="flex flex-col p-4 gap-4 items-center justify-center"
+        ></div>
+      </div>
+    </div>
   </body>
 </html>
