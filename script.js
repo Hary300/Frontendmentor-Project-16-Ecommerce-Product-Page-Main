@@ -31,11 +31,10 @@ closeButton.addEventListener('click', closeMenu);
 const mobileNavigationLinksContainer =
   document.getElementById('mobile-nav-links');
 
-mobileNavigationLinksContainer.innerHTML = `
-  ${navigationLinks
-    .map(
-      (link) =>
-        `<li key=${link.id} class='border-b-4 border-orange/0 hover:border-orange'>
+mobileNavigationLinksContainer.innerHTML = navigationLinks
+  .map(
+    (link) =>
+      `<li key=${link.id} class='border-b-4 border-orange/0 hover:border-orange'>
         <a
           href=${link.href}
           class='cursor-pointer font-bold'
@@ -43,9 +42,8 @@ mobileNavigationLinksContainer.innerHTML = `
           ${link.label}
         </a>
       </li>`
-    )
-    .join('')}
-  `;
+  )
+  .join('');
 
 /**-----------
  * NavLinks
@@ -54,20 +52,18 @@ mobileNavigationLinksContainer.innerHTML = `
 const desktopNavigationLinksContainer =
   document.getElementById('desktop-nav-links');
 
-desktopNavigationLinksContainer.innerHTML = `
-  ${navigationLinks
-    .map(
-      (link) =>
-        `<li key=${link.id} class='border-b-4 border-orange/0 hover:border-orange pt-8 pb-6 cursor-pointer text-grayish-blue hover:text-black transition-all duration-300 ease-in-out'>
+desktopNavigationLinksContainer.innerHTML = navigationLinks
+  .map(
+    (link) =>
+      `<li key=${link.id} class='border-b-4 border-orange/0 hover:border-orange pt-8 pb-6 cursor-pointer text-grayish-blue hover:text-black transition-all duration-300 ease-in-out'>
         <a
           href=${link.href}
         >
           ${link.label}
         </a>
       </li>`
-    )
-    .join('')}
-  `;
+  )
+  .join('');
 
 /**-----------
  * Cart
@@ -107,17 +103,50 @@ document.addEventListener('click', (event) => {
 /**-----------
  * Product Image
  ------------*/
-
+const activeImgContainer = document.getElementById('active-img-container');
 const thumbnailCOntainer = document.getElementById('thumbnail-container');
 
-thumbnailCOntainer.innerHTML = `
-${products
+let activeImgId = 'product1';
+
+activeImgContainer.innerHTML = products
   .map(
-    (img) => `
-<div key=${img.id} class="hidden sm:block flex-1 rounded-lg overflow-hidden">
+    (product) =>
+      `<img src=${product.imgSrc} alt=${product.altText} data-id=${product.id} class='display-image absolute inset-0 transition-opacity duration-300 ease-in-out  ${product.id === activeImgId ? 'opacity-100' : 'opacity-0'}' />`
+  )
+  .join('');
+
+function setActiveImg(id = activeImgId) {
+  const images = activeImgContainer.querySelectorAll('.display-image');
+
+  images.forEach((image) => {
+    image.classList.toggle('opacity-100', image.dataset.id === id);
+    image.classList.toggle('opacity-0', image.dataset.id !== id);
+  });
+}
+
+function renderThumbnail() {
+  thumbnailCOntainer.innerHTML = products
+    .map(
+      (img) => `
+<div class="product-thumbnail hidden sm:block flex-1 rounded-lg overflow-hidden cursor-pointer ${img.id === activeImgId ? 'opacity-40' : ''}" data-id=${img.id}>
   <img src=${img.imgSrc} alt=${img.altText} />
 </div>  
   `
-  )
-  .join('')}
-`;
+    )
+    .join('');
+
+  const productThumbnails = document.querySelectorAll('.product-thumbnail');
+
+  productThumbnails.forEach((thumbnail) => {
+    console.log('thumbnail');
+    thumbnail.addEventListener('click', () => {
+      console.log('click');
+      setActiveImg(thumbnail.dataset.id);
+      activeImgId = thumbnail.dataset.id;
+      renderThumbnail();
+    });
+  });
+}
+
+renderThumbnail();
+setActiveImg();
