@@ -1,4 +1,5 @@
 import { navigationLinks } from './data/navigationLinks.js';
+import { products } from './data/products.js';
 
 /**---------------
  * Hamburger Menu 
@@ -102,3 +103,21 @@ document.addEventListener('click', (event) => {
     toggleCart();
   }
 });
+
+/**-----------
+ * Product Image
+ ------------*/
+
+const thumbnailCOntainer = document.getElementById('thumbnail-container');
+
+thumbnailCOntainer.innerHTML = `
+${products
+  .map(
+    (img) => `
+<div key=${img.id} class="hidden sm:block flex-1 rounded-lg overflow-hidden">
+  <img src=${img.imgSrc} alt=${img.altText} />
+</div>  
+  `
+  )
+  .join('')}
+`;
