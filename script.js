@@ -106,12 +106,15 @@ document.addEventListener('click', (event) => {
 const activeImgContainer = document.getElementById('active-img-container');
 const thumbnailCOntainer = document.getElementById('thumbnail-container');
 
-let activeImgId = 'product1';
+let activeImgId = 'image1';
+const selectedProduct = products.find((product) => product.id === 'product1');
 
-activeImgContainer.innerHTML = products
+console.log(selectedProduct);
+
+activeImgContainer.innerHTML = selectedProduct.images
   .map(
-    (product) =>
-      `<img src=${product.imgSrc} alt=${product.altText} data-id=${product.id} class='display-image absolute inset-0 transition-opacity duration-300 ease-in-out  ${product.id === activeImgId ? 'opacity-100' : 'opacity-0'}' />`
+    (image) =>
+      `<img src=${image.imgSrc} alt=${image.altText} data-id=${image.id} class='display-image absolute inset-0 transition-opacity duration-300 ease-in-out  ${image.id === activeImgId ? 'opacity-100' : 'opacity-0'}' />`
   )
   .join('');
 
@@ -125,11 +128,11 @@ function setActiveImg(id = activeImgId) {
 }
 
 function renderThumbnail() {
-  thumbnailCOntainer.innerHTML = products
+  thumbnailCOntainer.innerHTML = selectedProduct.images
     .map(
-      (img) => `
-<div class="product-thumbnail hidden sm:block flex-1 rounded-lg overflow-hidden cursor-pointer ${img.id === activeImgId ? 'opacity-40' : ''}" data-id=${img.id}>
-  <img src=${img.imgSrc} alt=${img.altText} />
+      (image) => `
+<div class="product-thumbnail hidden sm:block flex-1 rounded-lg overflow-hidden cursor-pointer ${image.id === activeImgId ? 'opacity-40' : ''}" data-id=${image.id}>
+  <img src=${image.imgSrc} alt=${image.altText} />
 </div>  
   `
     )
@@ -160,11 +163,11 @@ const itemContainer = document.getElementById('items-container');
 
 let activeItemIndex = 0;
 
-itemContainer.innerHTML = products
+itemContainer.innerHTML = selectedProduct.images
   .map(
-    (product) => `
+    (image) => `
   <div class='min-w-full'>
-    <img src=${product.imgSrc} alt=${product.altText}/>
+    <img src=${image.imgSrc} alt=${image.altText}/>
   </div>
   `
   )
@@ -175,7 +178,7 @@ nextButton.addEventListener('click', () => {
   activeItemIndex++;
 
   itemContainer.style.transform = `translateX(-${activeItemIndex * 100}%)`;
-  if (activeItemIndex >= products.length - 1) {
+  if (activeItemIndex >= selectedProduct.images.length - 1) {
     nextButton.disabled = true;
     return;
   }
@@ -197,3 +200,47 @@ if (activeItemIndex <= 0) {
 } else if (activeItemIndex >= products.length - 1) {
   nextButton.disabled = true;
 }
+
+/**-----------------------
+ * Product Info
+ ------------------------*/
+const companyNameEl = document.getElementById('company-name');
+const productNameEl = document.getElementById('product-name');
+const productDescriptionEl = document.getElementById('product-description');
+const finalPriceEl = document.getElementById('final-price');
+const discountEL = document.getElementById('discount');
+const originalPriceEl = document.getElementById('original-price');
+const decQuantityEl = document.getElementById('dec-quantity');
+const quantityEl = document.getElementById('quantity');
+const incQuantityEl = document.getElementById('inc-quantity');
+const addToCartButtonEl = document.getElementById('add-to-cart-button');
+
+const discount = selectedProduct.discount;
+const originalPrice = selectedProduct.price;
+
+let quantity = 0;
+
+companyNameEl.innerText = selectedProduct.company;
+productNameEl.innerText = selectedProduct.productName;
+productDescriptionEl.innerText = selectedProduct.productDescription;
+finalPriceEl.innerText = `$${(originalPrice * (discount / 100)).toFixed(2)}`;
+discountEL.innerText = `${discount}%`;
+originalPriceEl.innerText = `$${originalPrice.toFixed(2)}`;
+quantityEl.innerText = quantity;
+
+function quantityIncrement() {
+  decQuantityEl.disabled = false;
+  quantity++;
+  quantityEl.innerText = quantity;
+}
+
+function quantityDecrement() {
+  quantity--;
+  quantityEl.innerText = quantity;
+  if (quantity <= 0) {
+    decQuantityEl.disabled = true;
+  }
+}
+
+incQuantityEl.addEventListener('click', quantityIncrement);
+decQuantityEl.addEventListener('click', quantityDecrement);
