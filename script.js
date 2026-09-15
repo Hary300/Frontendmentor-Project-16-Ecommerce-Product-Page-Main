@@ -150,3 +150,50 @@ function renderThumbnail() {
 
 renderThumbnail();
 setActiveImg();
+
+/**-----------------------
+ * Carousel Product Image
+ ------------------------*/
+const nextButton = document.getElementById('next-button');
+const prevButton = document.getElementById('prev-button');
+const itemContainer = document.getElementById('items-container');
+
+let activeItemIndex = 0;
+
+itemContainer.innerHTML = products
+  .map(
+    (product) => `
+  <div class='min-w-full'>
+    <img src=${product.imgSrc} alt=${product.altText}/>
+  </div>
+  `
+  )
+  .join('');
+
+nextButton.addEventListener('click', () => {
+  prevButton.disabled = false;
+  activeItemIndex++;
+
+  itemContainer.style.transform = `translateX(-${activeItemIndex * 100}%)`;
+  if (activeItemIndex >= products.length - 1) {
+    nextButton.disabled = true;
+    return;
+  }
+});
+
+prevButton.addEventListener('click', () => {
+  nextButton.disabled = false;
+  activeItemIndex--;
+
+  itemContainer.style.transform = `translateX(-${activeItemIndex * 100}%)`;
+  if (activeItemIndex <= 0) {
+    prevButton.disabled = true;
+    return;
+  }
+});
+
+if (activeItemIndex <= 0) {
+  prevButton.disabled = true;
+} else if (activeItemIndex >= products.length - 1) {
+  nextButton.disabled = true;
+}

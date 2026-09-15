@@ -70,19 +70,52 @@
           </div>
         </header>
 
+        <!-- PRODUCT DETAIL -->
         <section id="product-details" class="lg:px-12">
-          <div class="flex flex-col gap-4 sm:max-w-60 lg:max-w-100">
-            <div
-              id="active-img-container"
-              class="relative sm:rounded-xl overflow-hidden aspect-square"
-            ></div>
-            <div id="thumbnail-container" class="flex sm:gap-2 lg:gap-4"></div>
+          <div>
+            <div class="hidden sm:flex flex-col gap-4 sm:max-w-60 lg:max-w-100">
+              <div
+                id="active-img-container"
+                class="relative sm:rounded-xl overflow-hidden aspect-square"
+              ></div>
+              <div
+                id="thumbnail-container"
+                class="flex sm:gap-2 lg:gap-4"
+              ></div>
+            </div>
+
+            <div id="carousel-wrapper" class="relative sm:hidden">
+              <div id="viewport" class="overflow-hidden">
+                <div
+                  id="items-container"
+                  class="flex transition-all duration-300 ease-in-out"
+                ></div>
+              </div>
+
+              <button
+                id="next-button"
+                class="absolute right-4 top-1/2 -translate-y-1/2 size-8 rounded-full bg-light-grayish-blue shrink-0 flex justify-center items-center disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
+              >
+                <img
+                  src="./assets/images/icon-next.svg"
+                  alt="next button"
+                  class="w-2"
+                />
+              </button>
+
+              <button
+                id="prev-button"
+                class="absolute left-4 top-1/2 -translate-y-1/2 size-8 rounded-full bg-light-grayish-blue shrink-0 flex justify-center items-center disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
+              >
+                <img
+                  src="./assets/images/icon-previous.svg"
+                  alt="prev button"
+                  class="w-2"
+                />
+              </button>
+            </div>
           </div>
         </section>
-        <!-- Fall Limited Edition Sneakers These low-profile sneakers are your
-        perfect casual wear companion. Featuring a durable rubber outer sole,
-        they’ll withstand everything the weather can offer. $125.00 50% $250.00
-        0 Add to cart -->
 
         <!-- FOOTER -->
         <footer class="attribution mt-10">
@@ -126,3 +159,8 @@
     </div>
   </body>
 </html>
+
+<!-- Fall Limited Edition Sneakers These low-profile sneakers are your
+        perfect casual wear companion. Featuring a durable rubber outer sole,
+        they’ll withstand everything the weather can offer. $125.00 50% $250.00
+        0 Add to cart -->
