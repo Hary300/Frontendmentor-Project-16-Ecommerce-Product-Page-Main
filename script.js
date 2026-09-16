@@ -37,7 +37,7 @@ const mobileNavigationLinksContainer =
 mobileNavigationLinksContainer.innerHTML = navigationLinks
   .map(
     (link) =>
-      `<li key=${link.id} class='border-b-4 border-orange/0 hover:border-orange'>
+      `<li class='border-b-4 border-orange/0 hover:border-orange'>
         <a
           href=${link.href}
           class='cursor-pointer font-bold'
@@ -58,7 +58,7 @@ const desktopNavigationLinksContainer =
 desktopNavigationLinksContainer.innerHTML = navigationLinks
   .map(
     (link) =>
-      `<li key=${link.id} class='border-b-4 border-orange/0 hover:border-orange pt-8 pb-6 cursor-pointer text-grayish-blue hover:text-black transition-all duration-300 ease-in-out'>
+      `<li class='border-b-4 border-orange/0 hover:border-orange pt-8 pb-6 cursor-pointer text-grayish-blue hover:text-black transition-all duration-300 ease-in-out'>
         <a
           href=${link.href}
         >
@@ -466,4 +466,8 @@ addToCartButtonEl.addEventListener('click', () => {
   };
   cart.push(data);
   renderCart();
+});
+
+window.addEventListener('load', () => {
+  document.body.classList.add('ready');
 });
