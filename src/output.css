@@ -327,6 +327,9 @@
   .w-full {
     width: 100%;
   }
+  .max-w-10 {
+    max-width: calc(var(--spacing) * 10);
+  }
   .max-w-100 {
     max-width: calc(var(--spacing) * 100);
   }
@@ -424,6 +427,9 @@
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
+  }
+  .gap-6 {
+    gap: calc(var(--spacing) * 6);
   }
   .gap-8 {
     gap: calc(var(--spacing) * 8);
@@ -570,6 +576,9 @@
   }
   .text-light-grayish-blue {
     color: var(--color-light-grayish-blue);
+  }
+  .text-very-dark-blue {
+    color: var(--color-very-dark-blue);
   }
   .text-white {
     color: var(--color-white);

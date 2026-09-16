@@ -74,13 +74,66 @@ desktopNavigationLinksContainer.innerHTML = navigationLinks
 const cartBox = document.getElementById('cart-box');
 const cartContentContainer = document.getElementById('cart-content-container');
 
-const cart = [];
+let cart = [];
 
-if (cart.length <= 0) {
-  cartContentContainer.innerHTML = `
+function renderCart() {
+  if (cart.length <= 0) {
+    cartContentContainer.innerHTML = `
   <p class='min-h-30 flex justify-center items-center font-semibold text-dark-grayish-blue w-full'>Your cart is empty</p>
   `;
+  } else {
+    cartContentContainer.innerHTML = cart
+      .toReversed()
+      .map(
+        (item) =>
+          `
+<div class="flex flex-col gap-6 w-full" data-id=${item.id}>
+  <div class="flex justify-between items-center">
+      <div class="flex gap-4 items-center">
+        <div class="rounded-lg max-w-10 overflow-hidden">
+          <img src="${item.image}" alt="product image" />
+        </div>
+        <div class="flex flex-col">
+          <p class="text-dark-grayish-blue">${item.name}</p>
+          <p class="text-dark-grayish-blue">$${item.finalPrice.toFixed(2)}x${item.quantity}
+            <span class="text-very-dark-blue font-bold">$${item.totalPrice.toFixed(2)}</span>
+          </p>
+        </div>
+    </div>
+
+    <div class='delete-item-icon cursor-pointer'>
+      <img src="./assets/images/icon-delete.svg" alt="bin icon" />
+    </div>
+  </div>
+
+  <button
+    class="bg-orange h-10 w-full flex justify-center items-center font-semibold rounded-xl cursor-pointer hover:bg-orange/80"
+  >
+    Checkout
+  </button>
+</div>      
+      `
+      )
+      .join('');
+
+    /**-----------------------
+ * Delete item
+ ------------------------*/
+
+    const deleteItemIcons = document.querySelectorAll('.delete-item-icon');
+
+    deleteItemIcons.forEach((icon) => {
+      icon.addEventListener('click', (event) => {
+        const itemElement = event.target.closest('[data-id]');
+        const itemId = itemElement ? itemElement.dataset.id : null;
+        cart = cart.filter((item) => item.id !== itemId);
+        renderCart();
+      });
+    });
+  }
 }
+
+renderCart();
 
 let cartOpen = false;
 
@@ -98,7 +151,8 @@ document.addEventListener('click', (event) => {
   }
 
   const cartBox = event.target.closest('#cart-box');
-  if (!cartBox && cartOpen && !cartIcon) {
+  const deleteButton = event.target.closest('.delete-item-icon');
+  if (!cartBox && cartOpen && !cartIcon && !deleteButton) {
     toggleCart();
   }
 });
@@ -215,17 +269,17 @@ const originalPriceEl = document.getElementById('original-price');
 const decQuantityEl = document.getElementById('dec-quantity');
 const quantityEl = document.getElementById('quantity');
 const incQuantityEl = document.getElementById('inc-quantity');
-const addToCartButtonEl = document.getElementById('add-to-cart-button');
 
 const discount = selectedProduct.discount;
 const originalPrice = selectedProduct.price;
+const finalPrice = originalPrice * (discount / 100);
 
-let quantity = 0;
+let quantity = 1;
 
 companyNameEl.innerText = selectedProduct.company;
 productNameEl.innerText = selectedProduct.productName;
 productDescriptionEl.innerText = selectedProduct.productDescription;
-finalPriceEl.innerText = `$${(originalPrice * (discount / 100)).toFixed(2)}`;
+finalPriceEl.innerText = `$${finalPrice.toFixed(2)}`;
 discountEL.innerText = `${discount}%`;
 originalPriceEl.innerText = `$${originalPrice.toFixed(2)}`;
 quantityEl.innerText = quantity;
@@ -383,4 +437,21 @@ document.addEventListener('click', (event) => {
     lightboxOverlay.classList.remove('opacity-100');
     lightboxOverlay.classList.add('pointer-events-none');
   }
+});
+
+/**-----------------------
+ * Add to cart
+ ------------------------*/
+const addToCartButtonEl = document.getElementById('add-to-cart-button');
+addToCartButtonEl.addEventListener('click', () => {
+  const data = {
+    id: crypto.randomUUID(),
+    image: selectedProduct.images[0].thumbnailImgSrc,
+    name: selectedProduct.productName,
+    finalPrice: finalPrice,
+    quantity: quantity,
+    totalPrice: finalPrice * quantity,
+  };
+  cart.push(data);
+  renderCart();
 });
