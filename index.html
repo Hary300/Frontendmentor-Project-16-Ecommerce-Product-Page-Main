@@ -79,7 +79,7 @@
             <div class="hidden sm:flex flex-col gap-4">
               <div
                 id="active-img-container"
-                class="relative sm:rounded-xl overflow-hidden aspect-square"
+                class="relative sm:rounded-xl overflow-hidden aspect-square cursor-pointer"
               ></div>
               <div
                 id="thumbnail-container"
@@ -228,6 +228,49 @@
         <div
           id="cart-content-container"
           class="flex flex-col p-4 gap-4 items-center justify-center"
+        ></div>
+      </div>
+
+      <!-- LIGHTBOX -->
+      <div
+        id="lightbox-overlay"
+        class="fixed bg-black/80 inset-0 transition-opacity duration-300 ease-in-out pointer-events-none opacity-0"
+      ></div>
+
+      <div
+        id="lightbox"
+        class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col gap-4 max-w-120 transition-opacity duration-300 ease-in-out pointer-events-none opacity-0"
+      >
+        <div id="lightbox-carusel-wrapper" class="relative">
+          <div
+            id="lightbox-carousel-viewport"
+            class="overflow-hidden rounded-2xl"
+          >
+            <div
+              id="lightbox-carousel-items"
+              class="flex transition-all duration-300 ease-in-out"
+            ></div>
+          </div>
+
+          <button
+            id="lightbox-close-button"
+            class="absolute right-0 bottom-[calc(100%+1rem)] text-white hover:text-orange cursor-pointer"
+          ></button>
+
+          <button
+            id="lightbox-next-button"
+            class="absolute right-4 top-1/2 -translate-y-1/2 size-12 rounded-full bg-light-grayish-blue shrink-0 flex justify-center items-center disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed cursor-pointer hover:text-orange"
+          ></button>
+
+          <button
+            id="lightbox-prev-button"
+            class="absolute left-4 top-1/2 -translate-y-1/2 size-12 rounded-full bg-light-grayish-blue shrink-0 flex justify-center items-center disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed cursor-pointer hover:text-orange"
+          ></button>
+        </div>
+
+        <div
+          id="lightbox-image-thumbnails-container"
+          class="flex sm:gap-2 lg:gap-4"
         ></div>
       </div>
     </div>

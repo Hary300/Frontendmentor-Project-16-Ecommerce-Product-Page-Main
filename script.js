@@ -1,5 +1,8 @@
 import { navigationLinks } from './data/navigationLinks.js';
 import { products } from './data/products.js';
+import { nextButtonSvg } from './data/nextButtonSvg.js';
+import { prevButtonSvg } from './data/prevButtonSvg.js';
+import { closeButtonSvg } from './data/closeButtonSvg.js';
 
 /**---------------
  * Hamburger Menu 
@@ -109,8 +112,6 @@ const thumbnailCOntainer = document.getElementById('thumbnail-container');
 let activeImgId = 'image1';
 const selectedProduct = products.find((product) => product.id === 'product1');
 
-console.log(selectedProduct);
-
 activeImgContainer.innerHTML = selectedProduct.images
   .map(
     (image) =>
@@ -131,8 +132,8 @@ function renderThumbnail() {
   thumbnailCOntainer.innerHTML = selectedProduct.images
     .map(
       (image) => `
-<div class="product-thumbnail hidden sm:block flex-1 rounded-lg overflow-hidden cursor-pointer ${image.id === activeImgId ? 'opacity-40' : ''}" data-id=${image.id}>
-  <img src=${image.imgSrc} alt=${image.altText} />
+<div class="product-thumbnail hidden sm:block flex-1 rounded-lg overflow-hidden cursor-pointer border-3 ${image.id === activeImgId ? 'border-orange' : 'border-orange/0'}" data-id=${image.id}>
+  <img src=${image.imgSrc} alt=${image.altText} class='hover:opacity-20 size-full object-cover ${image.id === activeImgId && 'opacity-20'}' />
 </div>  
   `
     )
@@ -140,12 +141,13 @@ function renderThumbnail() {
 
   const productThumbnails = document.querySelectorAll('.product-thumbnail');
 
-  productThumbnails.forEach((thumbnail) => {
-    console.log('thumbnail');
+  productThumbnails.forEach((thumbnail, index) => {
     thumbnail.addEventListener('click', () => {
-      console.log('click');
       setActiveImg(thumbnail.dataset.id);
       activeImgId = thumbnail.dataset.id;
+      activeItemIndex = index;
+      renderLightBoxThumbnail(activeItemIndex);
+      jumpCarousel(activeItemIndex);
       renderThumbnail();
     });
   });
@@ -244,3 +246,141 @@ function quantityDecrement() {
 
 incQuantityEl.addEventListener('click', quantityIncrement);
 decQuantityEl.addEventListener('click', quantityDecrement);
+
+/**-----------------------
+ * LightBox
+ ------------------------*/
+const lightboxCarouselItems = document.getElementById(
+  'lightbox-carousel-items'
+);
+
+lightboxCarouselItems.innerHTML = selectedProduct.images
+  .map(
+    (image) => `
+<div class='min-w-full rounded-2xl overflow-hidden'>
+    <img src=${image.imgSrc} alt=${image.altText} class='rounded-2xl'/>
+</div>
+`
+  )
+  .join('');
+
+const lightboxNextButton = document.getElementById('lightbox-next-button');
+const lightboxPrevButton = document.getElementById('lightbox-prev-button');
+const lightboxCloseButton = document.getElementById('lightbox-close-button');
+
+lightboxNextButton.innerHTML = nextButtonSvg;
+lightboxPrevButton.innerHTML = prevButtonSvg;
+lightboxCloseButton.innerHTML = closeButtonSvg;
+
+function jumpCarousel(lightboxActiveItemIndex) {
+  lightboxCarouselItems.style.transform = `translateX(-${lightboxActiveItemIndex * 100}%)`;
+}
+
+const lightboxImageThumbnailsContainer = document.getElementById(
+  'lightbox-image-thumbnails-container'
+);
+
+lightboxImageThumbnailsContainer.innerHTML = selectedProduct.images
+  .map(
+    (image, index) => `
+<div class="lightbox-image-thumbnail hidden sm:block flex-1 rounded-lg overflow-hidden cursor-pointer border-3 ${activeItemIndex === index ? 'border-orange' : 'border-orange/0'}" data-id=${image.id}>
+  <img src=${image.imgSrc} alt=${image.altText} class='hover:opacity-70 size-full object-cover ${activeItemIndex === index && 'opacity-80'}' />
+</div>  
+  `
+  )
+  .join('');
+
+function renderLightBoxThumbnail(lightBoxActiveIndex) {
+  lightboxImageThumbnailsContainer.innerHTML = selectedProduct.images
+    .map(
+      (image, index) => `
+<div class="lightbox-image-thumbnail hidden sm:block flex-1 rounded-lg overflow-hidden cursor-pointer border-3 ${lightBoxActiveIndex === index ? 'border-orange' : 'border-orange/0'}" data-id=${image.id}>
+  <img src=${image.imgSrc} alt=${image.altText} class='hover:opacity-70 size-full object-cover ${lightBoxActiveIndex === index && 'opacity-80'}' />
+</div>  
+  `
+    )
+    .join('');
+
+  if (activeItemIndex <= 0) {
+    lightboxPrevButton.disabled = true;
+  } else {
+    lightboxPrevButton.disabled = false;
+  }
+
+  if (activeItemIndex >= selectedProduct.images.length - 1) {
+    lightboxNextButton.disabled = true;
+  } else {
+    lightboxNextButton.disabled = false;
+  }
+
+  const lightboxImageThumbnails = document.querySelectorAll(
+    '.lightbox-image-thumbnail'
+  );
+
+  lightboxImageThumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', () => {
+      activeItemIndex = index;
+      jumpCarousel(activeItemIndex);
+      renderLightBoxThumbnail(activeItemIndex);
+    });
+  });
+}
+
+if (activeItemIndex <= 0) {
+  lightboxPrevButton.disabled = true;
+}
+
+function prevLightBoxCarousel() {
+  lightboxNextButton.disabled = false;
+  activeItemIndex--;
+  renderLightBoxThumbnail(activeItemIndex);
+
+  lightboxCarouselItems.style.transform = `translateX(-${activeItemIndex * 100}%)`;
+  if (activeItemIndex <= 0) {
+    lightboxPrevButton.disabled = true;
+    return;
+  }
+}
+
+function nextLightBoxCarousel() {
+  lightboxPrevButton.disabled = false;
+  activeItemIndex++;
+  renderLightBoxThumbnail(activeItemIndex);
+
+  lightboxCarouselItems.style.transform = `translateX(-${activeItemIndex * 100}%)`;
+  if (activeItemIndex >= selectedProduct.images.length - 1) {
+    lightboxNextButton.disabled = true;
+    return;
+  }
+}
+
+lightboxNextButton.addEventListener('click', nextLightBoxCarousel);
+
+lightboxPrevButton.addEventListener('click', prevLightBoxCarousel);
+
+renderLightBoxThumbnail(activeItemIndex);
+
+const lightboxOverlay = document.getElementById('lightbox-overlay');
+const lightbox = document.getElementById('lightbox');
+activeImgContainer.addEventListener('click', () => {
+  const isBigScreen = window.innerWidth > 768;
+  if (!isBigScreen) return;
+  lightbox.classList.add('opacity-100');
+  lightbox.classList.remove('pointer-events-none');
+  lightboxOverlay.classList.add('opacity-100');
+  lightboxOverlay.classList.remove('pointer-events-none');
+});
+
+document.addEventListener('click', (event) => {
+  const lightboxCloseButtonTarget = event.target.closest(
+    '#lightbox-close-button'
+  );
+  const lightboxOverlayTarget = event.target.closest('#lightbox-overlay');
+
+  if (lightboxCloseButtonTarget || lightboxOverlayTarget) {
+    lightbox.classList.remove('opacity-100');
+    lightbox.classList.add('pointer-events-none');
+    lightboxOverlay.classList.remove('opacity-100');
+    lightboxOverlay.classList.add('pointer-events-none');
+  }
+});
