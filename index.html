@@ -51,13 +51,14 @@
           </div>
 
           <div class="flex gap-4 items-center">
-            <div class="cursor-pointer">
+            <div id="cart-container" class="relative cursor-pointer">
               <img
                 id="cart-icon"
                 src="./assets/images/icon-cart.svg"
                 alt="cart icon"
               />
             </div>
+
             <div
               class="size-7 md:size-8 overflow-hidden rounded-full shrink-0 border-2 border-orange/0 hover:border-orange cursor-pointer transition-all duration-300 ease-in-out"
             >
@@ -222,7 +223,7 @@
       <!-- CART BOX-->
       <div
         id="cart-box"
-        class="absolute md:right-10 lg:right-15 xl:right-30 md:translate-0 top-20 py-4 rounded-xl flex flex-col w-[calc(100%-2rem)] right-1/2 translate-x-1/2 md:max-w-100 shadow-[0_0_10px_rgba(0,0,0,0.2)] bg-white transition-all duration-300 ease-in-out opacity-0 pointer-events-none"
+        class="absolute md:right-10 lg:right-15 xl:right-30 md:translate-0 top-20 py-4 rounded-xl flex flex-col w-[calc(100%-2rem)] right-1/2 translate-x-1/2 md:max-w-100 shadow-[0_0_10px_rgba(0,0,0,0.2)] bg-white transition-all duration-300 ease-in-out opacity-0 pointer-events-none h-100 overflow-auto"
       >
         <p class="px-4 pb-4 border-b border-grayish-blue font-bold">Cart</p>
         <div

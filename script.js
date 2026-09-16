@@ -77,11 +77,23 @@ const cartContentContainer = document.getElementById('cart-content-container');
 let cart = [];
 
 function renderCart() {
+  const totalItemCart = document.getElementById('total-item-cart');
+  if (totalItemCart) totalItemCart.remove();
   if (cart.length <= 0) {
     cartContentContainer.innerHTML = `
   <p class='min-h-30 flex justify-center items-center font-semibold text-dark-grayish-blue w-full'>Your cart is empty</p>
   `;
   } else {
+    const totalItems = `
+<div
+  id="total-item-cart"
+  class="absolute -top-2 -right-2 size-5 rounded-full bg-red-500 text-white flex justify-center items-center shrink-0 text-xs font-semibold"
+>
+  ${cart.length}
+</div>
+`;
+    const cartContainer = document.getElementById('cart-container');
+    cartContainer.insertAdjacentHTML('beforeend', totalItems);
     cartContentContainer.innerHTML = cart
       .toReversed()
       .map(
